@@ -14,7 +14,7 @@ It is designed as a safer operational alternative to ad-hoc `curl | bash` instal
 ## Quick start
 
 ```bash
-git clone https://github.com/YOUR_ACCOUNT/nodeforge-stack.git
+git clone https://github.com/bobvhfhh/nodeforge-stack.git
 cd nodeforge-stack
 chmod +x bin/nodeforge
 sudo ./bin/nodeforge --dry-run doctor
@@ -28,9 +28,32 @@ State-changing commands are deliberately explicit. For example, render a firewal
 sudo ./bin/nodeforge firewall apply --speedtest --mining --bt
 ```
 
+Incus and node networking:
+
+```bash
+sudo ./bin/nodeforge incus install
+sudo ./bin/nodeforge incus init
+sudo ./bin/nodeforge network doctor
+sudo ./bin/nodeforge network apply --interface eth0 --ipv4 192.0.2.10/24 --gateway 192.0.2.1 --apply
+```
+
+The network command validates first. It only edits `/etc/network/interfaces` when `--apply` is supplied, creates a backup under `/var/lib/nodeforge/backups`, and performs a connectivity probe before reporting success. Keep an out-of-band console available.
+
+Agent and Sing-box artifacts must be supplied with a SHA-256 value from your trusted release pipeline:
+
+```bash
+sudo ./bin/nodeforge agent install --panel https://panel.example --token REDACTED \
+  --manifest https://panel.example/releases/agent.json --sha256 MANIFEST_SHA256 \
+  --binary-url https://panel.example/releases/nodeforge-agent-linux-amd64 \
+  --binary-sha256 BINARY_SHA256
+sudo ./bin/nodeforge singbox install --protocol vless-reality \
+  --binary-url https://github.com/SagerNet/sing-box/releases/download/vX.Y.Z/sing-box \
+  --sha256 BINARY_SHA256
+```
+
 ## Status
 
-The repository is under active development. Incus and firewall workflows are available now; distribution-specific package and artifact adapters are intentionally guarded and should be completed against your release infrastructure before production use. Run `nodeforge --dry-run doctor` before using a host-changing command.
+The core workflows are implemented. Artifact URLs, checksums, panel credentials, and protocol-specific Sing-box inbound settings remain deployment-specific and must be supplied by the operator. Run `nodeforge --dry-run doctor` before using a host-changing command.
 
 ## Safety
 

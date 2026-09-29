@@ -17,7 +17,13 @@ nf_agent_install() {
 PANEL_URL=$panel
 AGENT_TOKEN=$token
 EOF
-  nf_info "agent manifest and restricted config installed; binary selection is release-specific"
+  if [[ -x "$NF_AGENT_BIN" ]]; then
+    nf_atomic_write /etc/systemd/system/nodeforge-agent.service 0644 < "$ROOT/templates/incudal-agent.service"
+    nf_run systemctl daemon-reload
+    nf_run systemctl enable --now nodeforge-agent
+  else
+    nf_warn "manifest installed but no binary URL was supplied; agent service was not enabled"
+  fi
 }
 nf_agent_status() { systemctl status nodeforge-agent --no-pager 2>/dev/null || nf_info "nodeforge-agent is not installed"; }
 nf_agent_remove() { nf_require_root || return 1; nf_confirm "Remove NodeForge agent?" || return 1; nf_run systemctl disable --now nodeforge-agent; nf_run rm -rf -- "$NF_AGENT_DIR" "$NF_AGENT_BIN"; }
