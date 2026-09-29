@@ -18,7 +18,7 @@ PANEL_URL=$panel
 AGENT_TOKEN=$token
 EOF
   if [[ -x "$NF_AGENT_BIN" ]]; then
-    nf_atomic_write /etc/systemd/system/nodeforge-agent.service 0644 < "$ROOT/templates/incudal-agent.service"
+    nf_atomic_write /etc/systemd/system/nodeforge-agent.service 0644 < "$ROOT/templates/nodeforge-agent.service"
     nf_run systemctl daemon-reload
     nf_run systemctl enable --now nodeforge-agent
   else
