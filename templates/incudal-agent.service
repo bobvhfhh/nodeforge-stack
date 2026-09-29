@@ -1,0 +1,19 @@
+[Unit]
+Description=NodeForge Host Agent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/nodeforge-agent --config /etc/nodeforge-agent/config.env
+Restart=always
+RestartSec=5
+User=root
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/nodeforge
+
+[Install]
+WantedBy=multi-user.target

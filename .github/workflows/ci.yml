@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  shell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - name: Bash syntax
+        run: bash -n bin/nodeforge lib/*.sh modules/*.sh tests/*.sh
+      - name: ShellCheck
+        run: shellcheck bin/nodeforge lib/*.sh modules/*.sh tests/*.sh
+      - name: Tests
+        run: |
+          bash tests/test_core.sh
+          bash tests/test_cli.sh
+          bash tests/test_firewall.sh

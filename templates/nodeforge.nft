@@ -1,0 +1,3 @@
+table inet nodeforge {
+  chain forward { type filter hook forward priority -50; policy accept; ct state invalid drop; }
+}

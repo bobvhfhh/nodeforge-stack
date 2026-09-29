@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$ROOT/lib/core.sh"
+source "$ROOT/lib/validation.sh"
+source "$ROOT/lib/download.sh"
+source "$ROOT/lib/config.sh"
+source "$ROOT/modules/doctor.sh"
+source "$ROOT/modules/incus.sh"
+source "$ROOT/modules/network.sh"
+source "$ROOT/modules/firewall.sh"
+source "$ROOT/modules/agent.sh"
+source "$ROOT/modules/singbox.sh"
+source "$ROOT/modules/uninstall.sh"
+
+usage() {
+  cat <<'EOF'
+NodeForge Stack - safe Linux node management
+Usage: nodeforge [--dry-run] [--yes] [--verbose] <command> [action] [options]
+Commands: doctor, incus, network, firewall, agent, singbox, uninstall, version
+EOF
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --dry-run) NF_DRY_RUN=1; shift;;
+    --yes) NF_YES=1; shift;;
+    --verbose) NF_VERBOSE=1; shift;;
+    --config) NF_CONFIG_FILE="$2"; shift 2;;
+    -h|--help) usage; exit 0;;
+    *) break;;
+  esac
+done
+
+nf_config_load
+command_name="${1:-doctor}"
+shift || true
+case "$command_name" in
+  doctor) nf_doctor "$@";;
+  incus) nf_incus "$@";;
+  network) nf_network "$@";;
+  firewall) nf_firewall "$@";;
+  agent) nf_agent "$@";;
+  singbox) nf_singbox "$@";;
+  uninstall) nf_uninstall "$@";;
+  version) printf '%s\n' "$NF_VERSION";;
+  *) usage >&2; nf_die "unknown command: $command_name";;
+esac
