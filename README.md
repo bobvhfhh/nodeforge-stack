@@ -39,7 +39,15 @@ sudo ./bin/nodeforge network apply --interface eth0 --ipv4 192.0.2.10/24 --gatew
 
 The network command validates first. It only edits `/etc/network/interfaces` when `--apply` is supplied, creates a backup under `/var/lib/nodeforge/backups`, and performs a connectivity probe before reporting success. Keep an out-of-band console available.
 
-Agent and Sing-box artifacts must be supplied with a SHA-256 value from your trusted release pipeline:
+## Agent: optional
+
+You do not need an Agent to use this project. An Agent is a small background program that reports a server to a separate management panel. If you do not already have such a panel, ignore the Agent feature and run:
+
+```bash
+./bin/nodeforge agent explain
+```
+
+Only panel operators need the following advanced installation command. The panel provider must supply the URLs, token, and checksums:
 
 ```bash
 sudo ./bin/nodeforge agent install --panel https://panel.example --token REDACTED \
@@ -53,7 +61,7 @@ sudo ./bin/nodeforge singbox install --protocol vless-reality \
 
 ## Status
 
-The core workflows are implemented. Artifact URLs, checksums, panel credentials, and protocol-specific Sing-box inbound settings remain deployment-specific and must be supplied by the operator. Run `nodeforge --dry-run doctor` before using a host-changing command.
+The core workflows are implemented. Agent installation is optional and requires an external panel. Sing-box protocol credentials are deployment-specific; the installer creates a restricted configuration directory and only downloads a binary when you provide a verified URL and SHA-256. Run `nodeforge --dry-run doctor` before using a host-changing command.
 
 ## Safety
 

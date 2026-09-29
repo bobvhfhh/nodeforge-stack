@@ -19,6 +19,7 @@ usage() {
 NodeForge Stack - safe Linux node management
 Usage: nodeforge [--dry-run] [--yes] [--verbose] <command> [action] [options]
 Commands: doctor, incus, network, firewall, agent, singbox, uninstall, version
+Tip: `nodeforge agent explain` describes the optional panel agent.
 EOF
 }
 

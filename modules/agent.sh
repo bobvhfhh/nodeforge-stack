@@ -2,6 +2,14 @@
 
 NF_AGENT_DIR="${NF_AGENT_DIR:-/etc/nodeforge-agent}"
 NF_AGENT_BIN="${NF_AGENT_BIN:-/usr/local/bin/nodeforge-agent}"
+nf_agent_explain() {
+  cat <<'EOF'
+Agent is optional. It is a small background program supplied by a management panel.
+Without a panel, do not install it; Incus, networking, firewall, and Sing-box work normally.
+To use it later, your panel provider must give you a HTTPS panel URL, one-time token,
+manifest URL, binary URL, and SHA-256 checksums.
+EOF
+}
 nf_agent_install() {
   local panel="" token="" manifest="" checksum="" binary_url="" binary_sha256=""
   while [[ $# -gt 0 ]]; do case "$1" in --panel) panel="$2"; shift 2;; --token) token="$2"; shift 2;; --manifest) manifest="$2"; shift 2;; --sha256) checksum="$2"; shift 2;; --binary-url) binary_url="$2"; shift 2;; --binary-sha256) binary_sha256="$2"; shift 2;; *) nf_die "unknown agent option: $1"; return 1;; esac; done
@@ -27,4 +35,4 @@ EOF
 }
 nf_agent_status() { systemctl status nodeforge-agent --no-pager 2>/dev/null || nf_info "nodeforge-agent is not installed"; }
 nf_agent_remove() { nf_require_root || return 1; nf_confirm "Remove NodeForge agent?" || return 1; nf_run systemctl disable --now nodeforge-agent; nf_run rm -rf -- "$NF_AGENT_DIR" "$NF_AGENT_BIN"; }
-nf_agent() { case "${1:-status}" in install) shift; nf_agent_install "$@";; status) nf_agent_status;; remove) nf_agent_remove;; *) nf_die "usage: nodeforge agent {install|status|remove}";; esac; }
+nf_agent() { case "${1:-status}" in install) shift; nf_agent_install "$@";; status) nf_agent_status;; explain|help) nf_agent_explain;; remove) nf_agent_remove;; *) nf_die "usage: nodeforge agent {install|status|explain|remove}";; esac; }
