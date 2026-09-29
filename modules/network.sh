@@ -13,7 +13,7 @@ nf_network_apply() {
   nf_require_safe_name "$iface" || return 1; nf_require_ipv4_cidr "$ipv4" || return 1; nf_require_ipv4 "$gateway" || return 1
   [[ -z "$ipv6" ]] || nf_require_ipv6_or_cidr "$ipv6" || return 1
   nf_require_root || return 1; nf_lock || return 1
-  nf_info "validated network transaction for $iface ($ipv4 via $gateway)"
+  nf_info "validated network transaction for $iface ($ipv4 via $gateway${ipv6_gateway:+, IPv6 gateway $ipv6_gateway})"
   nf_warn "platform adapter is intentionally dry-run unless --apply-network is implemented for this distribution"
 }
 

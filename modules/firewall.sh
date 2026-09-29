@@ -19,6 +19,6 @@ EOF
 }
 
 nf_firewall_apply() { nf_require_root || return 1; nf_lock || return 1; local rules; rules="$(nf_firewall_render "$@")"; [[ -n "$rules" ]] || return 1; if command -v nft >/dev/null 2>&1; then printf '%s\n' "$rules" | nf_run nft -f -; else nf_warn "nft unavailable; no fallback rules applied"; return 1; fi; }
-nf_firewall_status() { command -v nft >/dev/null 2>&1 && nft list table inet nodeforge 2>/dev/null || nf_info "NodeForge firewall table is not installed"; }
-nf_firewall_remove() { nf_require_root || return 1; nf_confirm "Remove NodeForge firewall rules?" || return 1; command -v nft >/dev/null 2>&1 && nf_run nft delete table inet nodeforge || true; }
+nf_firewall_status() { if command -v nft >/dev/null 2>&1; then nft list table inet nodeforge 2>/dev/null || nf_info "NodeForge firewall table is not installed"; else nf_info "nft is unavailable"; fi; }
+nf_firewall_remove() { nf_require_root || return 1; nf_confirm "Remove NodeForge firewall rules?" || return 1; if command -v nft >/dev/null 2>&1; then nf_run nft delete table inet nodeforge || true; fi; }
 nf_firewall() { case "${1:-status}" in apply) shift; nf_firewall_apply "$@";; status) nf_firewall_status;; remove) nf_firewall_remove;; render) shift; nf_firewall_render "$@";; *) nf_die "usage: nodeforge firewall {apply|status|remove|render}";; esac; }

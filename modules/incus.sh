@@ -25,7 +25,7 @@ nf_incus_init() {
 nf_incus_remove() {
   nf_incus_require || return 1
   nf_confirm "Remove only NodeForge's Incus bridge?" || return 1
-  incus network show nodeforgebr0 >/dev/null 2>&1 && nf_run incus network delete nodeforgebr0 || true
+  if incus network show nodeforgebr0 >/dev/null 2>&1; then nf_run incus network delete nodeforgebr0; fi
 }
 
 nf_incus() {

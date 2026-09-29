@@ -3,7 +3,8 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 export NODEFORGE_TEST_MODE=1
-export NF_STATE_DIR="$(mktemp -d)"
+NF_STATE_DIR="$(mktemp -d)"
+export NF_STATE_DIR
 export NF_LOCK_FILE="${NF_STATE_DIR}/nodeforge.lock"
 trap 'rm -rf -- "$NF_STATE_DIR"' EXIT
 
