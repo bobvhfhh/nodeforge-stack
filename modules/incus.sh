@@ -17,6 +17,7 @@ nf_incus_install() {
     nf_run apt-get install -y ca-certificates curl gpg
     if [[ "${NF_DRY_RUN:-0}" != 1 ]]; then
       local codename
+      # shellcheck disable=SC1091
       codename="$(. /etc/os-release && printf '%s' "${VERSION_CODENAME:-}")"
       [[ -n "$codename" ]] || { nf_die "could not determine Debian/Ubuntu codename"; return 1; }
       nf_mkdir /etc/apt/keyrings
