@@ -1,6 +1,8 @@
 # NodeForge Stack
 
-NodeForge Stack is an independent Linux node-management toolkit for Incus hosts, dual-stack networking, host agents, abuse protection, and Sing-box services.
+> 本项目基于 [`ceocok/incudal`](https://github.com/ceocok/incudal) 的功能和设计进行复刻与二次开发。
+
+NodeForge Stack is a Linux node-management toolkit for Incus hosts, dual-stack networking, host agents, abuse protection, and Sing-box services. It is a reimplementation and secondary-development project based on the public functionality and design of [`ceocok/incudal`](https://github.com/ceocok/incudal).
 
 It is designed as a safer operational alternative to ad-hoc `curl | bash` installers:
 
@@ -69,4 +71,4 @@ Do not run a remote installer as root without reviewing the exact release. Use a
 
 ## License and attribution
 
-NodeForge Stack is released under Apache-2.0. Its functional requirements were informed by the public `ceocok/incudal` project; this repository is an independent implementation and does not redistribute that project's source code. See `NOTICE.md`.
+NodeForge Stack is released under Apache-2.0. This repository explicitly attributes its upstream reference project: [`ceocok/incudal`](https://github.com/ceocok/incudal). The NodeForge implementation reorganizes and hardens the feature set with a different module structure, safer download rules, scoped cleanup, dry-run support, and CI. See `NOTICE.md` for attribution and licensing details.
