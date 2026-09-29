@@ -17,6 +17,8 @@ NodeForge Stack 是一个面向 Linux VPS/物理机的节点管理工具，覆�
 - nftables 优先，并提供兼容路径
 - 模块化 Bash 结构、ShellCheck 和 GitHub Actions CI
 
+仓库里只保留运行代码、测试、服务模板和必要文档；内部设计草稿和未使用模板不会随项目发布。
+
 ## Project Overview (English)
 
 NodeForge Stack is a Linux node-management toolkit for VPS and bare-metal hosts. It covers Incus containers, dual-stack networking, an optional host agent, abuse-protection firewall rules, and Sing-box services.
